@@ -1,6 +1,7 @@
 package com.example.store;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public class OrderService {
 
     //    we receive a payment service object here in this constructor
     @Autowired
-    public OrderService(PaymentService paymentService){
+    public OrderService(@Qualifier("paypal") PaymentService paymentService){
         this.paymentService=paymentService;
     }
     public void placeOrder(){
