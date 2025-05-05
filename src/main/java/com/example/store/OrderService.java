@@ -15,7 +15,7 @@ public class OrderService {
 
     //    we receive a payment service object here in this constructor
     @Autowired
-    public OrderService(@Qualifier("paypal") PaymentService paymentService){
+    public OrderService(@Qualifier("stripe") PaymentService paymentService){
         this.paymentService=paymentService;
     }
     public void placeOrder(){
