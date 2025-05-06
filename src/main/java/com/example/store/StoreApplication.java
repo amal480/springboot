@@ -10,10 +10,13 @@ public class StoreApplication {
 
 	public static void main(String[] args) {
 
-		ConfigurableApplicationContext context=SpringApplication.run(StoreApplication.class, args);
-		var orderService=context.getBean(OrderService.class);
-		orderService.placeOrder();
-		context.close();
+		ApplicationContext context=SpringApplication.run(StoreApplication.class, args);
+//		var orderService=context.getBean(OrderService.class);
+//		orderService.placeOrder();
+		var userService=context.getBean(UserService.class);
+		userService.registerUser(new User(1L,"amal@mail.com","pass","amal"));
+		userService.registerUser(new User(1L,"amal@mail.com","pass","amal"));
+
 	}
 
 }

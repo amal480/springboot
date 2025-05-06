@@ -7,3 +7,6 @@ stripe:
   enabled: true
   supported-currencies: USD,EUR,GBP
 payment-gateway: paypal
+mail:
+  port: 2000
+  host: google
