@@ -13,9 +13,9 @@ public class StoreApplication {
 		ApplicationContext context=SpringApplication.run(StoreApplication.class, args);
 //		var orderService=context.getBean(OrderService.class);
 //		orderService.placeOrder();
-		var userService=context.getBean(UserService.class);
-		userService.registerUser(new User(1L,"amal@mail.com","pass","amal"));
-		userService.registerUser(new User(1L,"amal@mail.com","pass","amal"));
+//		var userService=context.getBean(UserService.class);
+//		userService.registerUser(new User(1L,"amal@mail.com","pass","amal"));
+//		userService.registerUser(new User(1L,"amal@mail.com","pass","amal"));
 
 	}
 
