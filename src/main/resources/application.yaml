@@ -5,13 +5,3 @@ spring:
     url: jdbc:mysql://localhost:3306/store?createDatabaseIfNotExist=true
     username: root
     password: 2003
-
-stripe:
-  apiUrl: url
-  timeout: 2000
-  enabled: true
-  supported-currencies: USD,EUR,GBP
-payment-gateway: paypal
-mail:
-  port: 2000
-  host: google
