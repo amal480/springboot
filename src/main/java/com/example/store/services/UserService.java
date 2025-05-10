@@ -1,15 +1,15 @@
 package com.example.store.services;
 
 import com.example.store.entities.Address;
+import com.example.store.entities.Product;
 import com.example.store.entities.User;
-import com.example.store.repositories.AddressRepository;
-import com.example.store.repositories.ProfileRepository;
-import com.example.store.repositories.UserRepository;
+import com.example.store.repositories.*;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 @Service
 @AllArgsConstructor
@@ -18,6 +18,8 @@ public class UserService {
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Transactional
     public void showEntityStates(){
@@ -65,6 +67,42 @@ public class UserService {
                 .build();
         user.addAddress(address);
         userRepository.save(user);
-//        addressRepository.save(address);
     }
+    @Transactional
+    public void deleteRelated(){
+//        userRepository.deleteById(4L);
+        var user=userRepository.findById(7L).orElseThrow();
+        var address =user.getAddresses().getFirst();
+        user.removeAddress(address);
+        userRepository.save(user);
+    }
+
+//    @Transactional
+//    public void manageProducts(){
+//        var category=categoryRepository.findById((byte)1).orElseThrow();
+//
+//
+//        var product= Product.builder()
+//                .name("product 2")
+//                .description("description 2")
+//                .price(BigDecimal.valueOf(10.99))
+//                .category(category)
+//                .build();
+//        productRepository.save(product);
+//    }
+
+//    @Transactional
+//    public void manageProducts(){
+//        var user=userRepository.findById(4L).orElseThrow();
+//        var products=productRepository.findAll();
+//        products.forEach(user::addFavouriteProduct);
+//        userRepository.save(user);
+//    }
+
+    @Transactional
+    public void manageProducts() {
+        productRepository.deleteById(4L);
+    }
+
+
 }

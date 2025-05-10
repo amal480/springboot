@@ -31,7 +31,7 @@ public class User {
     private String password;
 
 //    user field inside the Address class is the owning side — it has the foreign key (user_id)
-    @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval = true )
     @Builder.Default
     private List <Address> addresses=new ArrayList<>();
 
@@ -61,11 +61,14 @@ public class User {
     }
 
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",cascade = CascadeType.REMOVE)
     private Profile profile;
 
     @ManyToMany
     @JoinTable(name="wishlist",joinColumns = @JoinColumn(name="user_id"),inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> wishlist=new HashSet<>();
 
+    public void addFavouriteProduct(Product product) {
+        wishlist.add(product);
+    }
 }
