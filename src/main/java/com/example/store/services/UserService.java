@@ -1,5 +1,6 @@
 package com.example.store.services;
 
+import com.example.store.entities.Address;
 import com.example.store.entities.User;
 import com.example.store.repositories.AddressRepository;
 import com.example.store.repositories.ProfileRepository;
@@ -48,5 +49,22 @@ public class UserService {
 
     public void fetchAddress(){
         var address=addressRepository.findById(1L).orElseThrow();
+    }
+
+    public void persistRelated(){
+        var user=User.builder()
+                .name("doe")
+                .email("doe@mail")
+                .password("password")
+                .build();
+        var address= Address.builder()
+                .street("street")
+                .city("city")
+                .state("state")
+                .zip("zip")
+                .build();
+        user.addAddress(address);
+        userRepository.save(user);
+//        addressRepository.save(address);
     }
 }

@@ -15,7 +15,7 @@ public class StoreApplication {
 		ApplicationContext context=SpringApplication.run(StoreApplication.class, args);
         var repository=context.getBean(UserRepository.class);
         var userService=context.getBean(UserService.class);
-        userService.fetchAddress();
+        userService.persistRelated();
     }
 
 }

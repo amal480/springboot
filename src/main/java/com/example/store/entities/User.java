@@ -31,7 +31,7 @@ public class User {
     private String password;
 
 //    user field inside the Address class is the owning side — it has the foreign key (user_id)
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST)
     @Builder.Default
     private List <Address> addresses=new ArrayList<>();
 
