@@ -1,6 +1,7 @@
 package com.example.store.services;
 
 import com.example.store.entities.Address;
+import com.example.store.entities.Category;
 import com.example.store.entities.Product;
 import com.example.store.entities.User;
 import com.example.store.repositories.*;
@@ -107,6 +108,11 @@ public class UserService {
     @Transactional
     public void updateProductPrices(){
         productRepository.updatePriceByCategory(BigDecimal.valueOf(10),(byte)2);
+    }
+
+    public void fetchProducts(){
+        var products=productRepository.findByCategory(new Category((byte)1));
+        products.forEach(System.out::println);
     }
 
 }

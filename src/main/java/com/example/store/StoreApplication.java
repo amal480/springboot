@@ -16,7 +16,7 @@ public class StoreApplication {
         var repository=context.getBean(UserRepository.class);
         var userService=context.getBean(UserService.class);
 //        userService.persistRelated();
-        userService.updateProductPrices();
+        userService.fetchProducts();
     }
 
 }
