@@ -115,4 +115,9 @@ public class UserService {
         products.forEach(System.out::println);
     }
 
+    @Transactional
+    public void fetchUser(){
+        var user=userRepository.findByEmail("doe123@mail").orElseThrow();
+        System.out.println(user);
+    }
 }
