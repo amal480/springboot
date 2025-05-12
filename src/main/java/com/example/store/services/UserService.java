@@ -7,6 +7,8 @@ import com.example.store.entities.User;
 import com.example.store.repositories.*;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,90 +17,72 @@ import java.math.BigDecimal;
 @Service
 @AllArgsConstructor
 public class UserService {
-    private final EntityManager entityManager;
-    private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
+    private final EntityManager entityManager;
     private final AddressRepository addressRepository;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    public void showEntityStates(){
-        var user= User.builder()
-                .name("John")
-                .email("johnmail@mail.com")
+    public void showEntityStates() {
+        var user = User.builder()
+                .name("John Doe")
+                .email("john.doe@example.com")
                 .password("password")
                 .build();
-        if (entityManager.contains(user)){
+
+        if (entityManager.contains(user))
             System.out.println("Persistent");
-        }
-        else{
-            System.out.println("Transient or detached");
-        }
-    userRepository.save(user);
-        if (entityManager.contains(user)){
+        else
+            System.out.println("Transient / Detached");
+
+        userRepository.save(user);
+
+        if (entityManager.contains(user))
             System.out.println("Persistent");
-        }
-        else{
-            System.out.println("Transient or detached");
-        }
+        else
+            System.out.println("Transient / Detached");
+
+
     }
 
     @Transactional
-    public void showRelatedEntities(){
-        var profile=profileRepository.findById(4L).orElseThrow();
+    public void showRelatedEntities() {
+        var profile = profileRepository.findById(2L).orElseThrow();
         System.out.println(profile.getUser().getEmail());
     }
 
-    public void fetchAddress(){
-        var address=addressRepository.findById(1L).orElseThrow();
+    public void fetchAddress() {
+        var address = addressRepository.findById(1L).orElseThrow();
     }
 
-    public void persistRelated(){
-        var user=User.builder()
-                .name("doe")
-                .email("doe@mail")
+    public void persistRelated() {
+        var user = User.builder()
+                .name("John Doe")
+                .email("john.doe@example.com")
                 .password("password")
                 .build();
-        var address= Address.builder()
+
+        var address = Address.builder()
                 .street("street")
                 .city("city")
                 .state("state")
                 .zip("zip")
                 .build();
+
         user.addAddress(address);
+
         userRepository.save(user);
     }
+
     @Transactional
-    public void deleteRelated(){
-//        userRepository.deleteById(4L);
-        var user=userRepository.findById(7L).orElseThrow();
-        var address =user.getAddresses().getFirst();
+    public void deleteRelated() {
+        var user = userRepository.findById(3L).orElseThrow();
+        var address = user.getAddresses().getFirst();
         user.removeAddress(address);
         userRepository.save(user);
     }
-
-//    @Transactional
-//    public void manageProducts(){
-//        var category=categoryRepository.findById((byte)1).orElseThrow();
-//
-//
-//        var product= Product.builder()
-//                .name("product 2")
-//                .description("description 2")
-//                .price(BigDecimal.valueOf(10.99))
-//                .category(category)
-//                .build();
-//        productRepository.save(product);
-//    }
-
-//    @Transactional
-//    public void manageProducts(){
-//        var user=userRepository.findById(4L).orElseThrow();
-//        var products=productRepository.findAll();
-//        products.forEach(user::addFavouriteProduct);
-//        userRepository.save(user);
-//    }
 
     @Transactional
     public void manageProducts() {
@@ -106,22 +90,43 @@ public class UserService {
     }
 
     @Transactional
-    public void updateProductPrices(){
-        productRepository.updatePriceByCategory(BigDecimal.valueOf(10),(byte)2);
+    public void updateProductPrices() {
+        productRepository.updatePriceByCategory(BigDecimal.valueOf(10), (byte)1);
     }
 
     @Transactional
-    public void fetchProducts(){
-        var products=productRepository.findProducts(BigDecimal.valueOf(1),BigDecimal.valueOf(15));
+    public void fetchProducts() {
+        var product = new Product();
+        product.setName("product");
+
+        var matcher = ExampleMatcher.matching()
+                .withIncludeNullValues()
+                .withIgnorePaths("id", "description")
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        var example = Example.of(product, matcher);
+
+        var products = productRepository.findAll(example);
+        products.forEach(System.out::println);
+    }
+
+    public void fetchProductsByCriteria() {
+        var products = productRepository.findProductsByCriteria(null, BigDecimal.valueOf(1), BigDecimal.valueOf(15));
         products.forEach(System.out::println);
     }
 
     @Transactional
-    public void fetchUsers(){
-        var users=userRepository.findAllWithTags();
-        users.forEach(u ->{
+    public void fetchUsers() {
+        var users = userRepository.findAllWithTags();
+        users.forEach(u -> {
             System.out.println(u);
             u.getAddresses().forEach(System.out::println);
-        } );
+        });
+    }
+
+    @Transactional
+    public void printLoyalProfiles() {
+        var users = userRepository.findLoyalUsers(2);
+        users.forEach(p -> System.out.println(p.getId() + ": " + p.getEmail()));
     }
 }
