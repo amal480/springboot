@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
+import java.math.BigDecimal;
+
 @SpringBootApplication
 public class StoreApplication {
 
@@ -16,7 +18,7 @@ public class StoreApplication {
         var repository=context.getBean(UserRepository.class);
         var userService=context.getBean(UserService.class);
 //        userService.persistRelated();
-        userService.fetchProductsByCriteria();
+        userService.fetchProductsBySpecification("prod", BigDecimal.valueOf(1),null);
     }
 
 }
