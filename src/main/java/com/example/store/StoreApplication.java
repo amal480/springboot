@@ -18,7 +18,7 @@ public class StoreApplication {
         var repository=context.getBean(UserRepository.class);
         var userService=context.getBean(UserService.class);
 //        userService.persistRelated();
-        userService.fetchProductsBySpecification("prod", BigDecimal.valueOf(1),null);
+        userService.fetchPaginatedProducts(0,10);
     }
 
 }

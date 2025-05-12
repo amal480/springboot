@@ -11,6 +11,9 @@ import com.example.store.repositories.*;
 import com.example.store.repositories.specifications.ProductSpec;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -156,5 +159,24 @@ public class UserService {
             spec=spec.and(ProductSpec.hasPriceLessThanOrEqualTo(maxPrice));
         }
         productRepository.findAll(spec).forEach(System.out::println);
+    }
+
+    public void fetchSortedProducts(){
+        var sort=Sort.by("name").and(
+                Sort.by("price").descending()
+        );
+        productRepository.findAll(sort).forEach(System.out::println);
+    }
+
+    public void fetchPaginatedProducts(int pageNumber,int size){
+        PageRequest pageRequest=PageRequest.of(pageNumber,size);
+        Page<Product> page=productRepository.findAll(pageRequest);
+
+        var products=page.getContent();
+        products.forEach(System.out::println);
+        var totalPages=page.getTotalPages();
+        var totalElements=page.getTotalElements();
+        System.out.println("Total Pages: "+totalPages);
+        System.out.println("Total Elements: "+totalElements);
     }
 }
